@@ -1,0 +1,17 @@
+# Checkout Terraform code from source control
+git checkout <Terraform code repository>
+
+# cd to the project to Deploy
+cd ...
+
+# Initialize the working directory
+terraform init
+
+# Validate the Terraform configuration
+terraform validate
+
+# Plan the changes to be made
+terraform plan
+
+# Deploy the infrastructure
+terraform apply --auto-approve

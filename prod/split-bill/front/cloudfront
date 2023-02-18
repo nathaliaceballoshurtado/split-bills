@@ -1,0 +1,34 @@
+module "cloudfront" {
+  source = "terraform-aws-modules/cloudfront/aws"
+
+  # CloudFront distribution settings
+  enabled = true
+  comment = "My CloudFront distribution"
+  aliases = ["mydomain.com"]
+  origin_domain_name = "myorigin.com"
+  default_cache_behavior = {
+    allowed_methods  = ["GET", "HEAD"]
+    cached_methods   = ["GET", "HEAD"]
+    target_origin_id = "myorigin"
+    forwarded_values = {
+      query_string = false
+      cookies      = { forward = "none" }
+      headers      = ["Host"]
+    }
+    viewer_protocol_policy = "redirect-to-https"
+    min_ttl                 = 0
+    default_ttl             = 3600
+    max_ttl                 = 86400
+  }
+  price_class = "PriceClass_All"
+
+  # Export CloudFront distribution attributes
+  exports = {
+    domain_name         = "${aws_cloudfront_distribution.cloudfront.domain_name}"
+    arn                 = "${aws_cloudfront_distribution.cloudfront.arn}"
+    caller_reference    = "${aws_cloudfront_distribution.cloudfront.caller_reference}"
+    etag                = "${aws_cloudfront_distribution.cloudfront.etag}"
+    hosted_zone_id      = "${aws_cloudfront_distribution.cloudfront.hosted_zone_id}"
+    in_progress_validation_batches = "${aws_cloudfront_distribution.cloudfront.in_progress_validation_batches}"
+  }
+}
